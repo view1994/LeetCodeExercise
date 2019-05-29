@@ -14,14 +14,42 @@ def fourSum(nums, target):
         return []
     elif target<nums[0]+nums[1]+nums[2]+nums[3]:
         return []
-    for i in range(len(nums)-3):
-        for j in range(i+1,len(nums)-2):
-            for k in range(j+1,len(nums)-1):
-                for l in range(k+1,len(nums)):
-                    if (nums[i]+nums[j]+nums[k]+nums[l]) ==target:
-                        item = [nums[i],nums[j],nums[k],nums[l]]
-                        if item not in result:
-                            result.append(item)
+    le = len(nums)
+    i = 0
+    while (i < le - 3) :
+        if (nums[i]+nums[i+1]+nums[i+2]+nums[i+3] > target):
+            break
+        j = le - 1
+        while (j > i+2)  :
+            if (nums[j]+nums[j-1]+nums[j-2]+nums[j-3] <target):
+                break
+            k = i + 1
+            l = j -1
+            target_kl = target - nums[i] - nums[j]
+            while (k < l):
+                if (nums[k] +nums[k+1] > target_kl):
+                    break
+                if (nums[l] + nums[l-1] < target_kl):
+                    break
+                target_kl = target - nums[i] - nums[j]
+                if (target_kl == nums[k] + nums[l]):
+                    result.append([nums[i],nums[k],nums[l],nums[j]])
+                    while(nums[k]==nums[k+1])&(k<l-1):
+                        k += 1
+                    k += 1
+                    while(nums[l]==nums[l-1])&(l>k+1):
+                        l -= 1
+                    l -= 1
+                elif(target_kl > nums[k] + nums[l]):
+                    k +=1
+                elif(target_kl < nums[k] + nums[l]):
+                    l -= 1
+            while (nums[j-1] == nums[j])&(j>i+3):
+                j -= 1
+            j -= 1
+        while((nums[i] == nums[i+1])&(i<le-4)):
+            i += 1
+        i += 1
     return result
 
 def main():
@@ -39,8 +67,17 @@ def main():
     #260            time=0.796875
     nums=[-494,-474,-425,-424,-391,-371,-365,-351,-345,-304,-292,-289,-283,-256,-236,-236,-236,-226,-225,-223,-217,-185,-174,-163,-157,-148,-145,-130,-103,-84,-71,-67,-55,-16,-13,-11,1,19,28,28,43,48,49,53,78,79,91,99,115,122,132,154,176,180,185,185,206,207,272,274,316,321,327,327,346,380,386,391,400,404,424,432,440,463,465,466,475,486,492]
     target=-1211
+    nums = [-5,5,4,-3,0,0,4,-2]
+    target = 4
+    nums = [0,0,0,0]
+    target=0
+    nums = [-1,-5,-5,-3,2,5,0,4]
+    target =-7
+    nums =[1,0,-1,0,-2,2]
+    target=0
     t=time.time()
-    print(fourSum(nums,target ))
+    res = fourSum(nums,target )
+    print(res ,len(res))
     print(time.time()-t)
 
 if __name__ == '__main__':
