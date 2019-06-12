@@ -53,9 +53,87 @@ def go1step1(m, n, i, j, N,start_step):
     return x
 def  GoOutAtStepN(m, n, i, j, N):
     return go1step1(m, n, i, j, N,0)-go1step1(m, n, i, j, N-1,0)
+
+def findPaths( m, n, N, i, j):
+        """
+        :type m: int
+        :type n: int
+        :type N: int
+        :type i: int
+        :type j: int
+        :rtype: int
+        """
+        path =0
+        MOD = (int)(1e9 + 7)
+        #print(i,j)
+
+        '''
+        if N == 0:
+            print('N=0')
+            return 0
+        el
+        '''
+        if N ==1:
+            '''
+            if i ==1:
+                path += 1
+            if i == m:
+                path +=1
+            if j==1:
+                path +=1
+            if j==n:
+                path +=1
+            '''
+            #print('N=1   ', path)
+            return (1 if i==1 else 0)+(1 if i==m else 0)+(1 if j==1 else 0)+(1 if j==n else 0)
+        else:
+            path += 1 if (i == 1) else findPaths(m, n, N - 1, i - 1, j)
+            path += 1 if (i == m) else findPaths( m , n , N-1 , i +1, j )
+            path += 1 if (j == 1) else findPaths( m , n , N-1 , i , j -1)
+            path += 1 if (j ==n ) else findPaths( m , n , N-1 , i , j +1 )
+            '''
+            if ( i<=1 ):
+                path += 1
+            else :
+                path += findPaths( m , n , N-1 , i -1, j )
+            if ( i>=m ):
+                path +=1
+            else:
+                path += findPaths( m , n , N-1 , i +1, j )
+            if ( j<=1):
+                path += 1
+            else:
+                path += findPaths( m , n , N-1 , i , j -1)
+            if ( j>=n ):
+                path +=1
+            else:
+                path += findPaths( m , n , N-1 , i , j +1 )
+            '''
+            path %= MOD
+            return path
+MOD = (int)(1e9 + 7)
+def findPath( m, n, N, i, j):
+    path = 0
+    if N >1:
+        path += 1 if (i == 1) else findPath(m, n, N - 1, i - 1, j)
+        path += 1 if (i == m) else findPath(m, n, N - 1, i + 1, j)
+        path += 1 if (j == 1) else findPath(m, n, N - 1, i, j - 1)
+        path += 1 if (j == n) else findPath(m, n, N - 1, i, j + 1)
+        path %= MOD
+        return path
+    elif N == 1:
+        return (1 if i == 1 else 0) + (1 if i == m else 0) + (1 if j == 1 else 0) + (1 if j == n else 0)
+    else:
+        return 0
+
+
 def main():
     t=time.time()
-    print(go1step1(8, 3, 1, 1, 8, 0))
+    test = 8, 3, 1, 1, 8, 0
+    test = 10,10,11,5,5
+    #print(go1step1(10,10,11,5,5))
+    m, n, N, i, j = 8,7,16,1,5
+    print(findPath(m, n, N, i+1, j+1))
     #print(go1step(1, 3, 1, 1, 2, 0))
     print(time.time()-t)
 if __name__ == '__main__':
